@@ -31,7 +31,7 @@ class Place(BaseModel, Base):
         longitude = Column(FLOAT(precision=10, scale=2), nullable=True)
         amenities = Relationship(
             "Amenity", secondary="place_amenity",
-            backref="place_amenity", viewonly=False
+            viewonly=False
         )
         reviews = Relationship(
             "Review", cascade="all, delete", backref="place_amenity")
@@ -67,23 +67,16 @@ class Place(BaseModel, Base):
             Getter attribute amenities
             that returns the list of Amenity instances
             """
-            amenity_ids = []
-            amenities = models.storage.all(Amenity)
-            for amenity in amenities.values():
-                if amenity.place_id == self.id:
-                    amenity_ids.append(amenity)
-            return amenity_ids
+
+            return self.amenity_ids
 
         @amenities.setter
-        def amenities(self):
+        def amenities(self, obj):
             # Please crosscheck this setter
             """
             Setter attribute amenities
             that returns the list of Amenity instances
             """
-            result = []
-            amenities = models.storage.all(Amenity)
-            for amenity in amenities.values():
-                if amenity.id == self.id:
-                    result.append(amenity)
-            self.amenity_ids = result
+
+            if type(obj) is Amenity:
+                    self.amenity_ids.append(obj)
