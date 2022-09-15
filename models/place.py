@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base, Relationship
-import models
-from models.review import Review
 from models.amenity import Amenity
 from sqlalchemy import (
     Column,
@@ -63,40 +61,40 @@ class Place(BaseModel, Base):
                 "amenity_id", String(60), ForeignKey("amenities.id"),
                 primary_key=True, nullable=False),
         )
+    else:
+        @property
+        def amenities(self):
+            # Please crosscheck this getter
+            """
+            Getter attribute amenities
+            that returns the list of Amenity instances
+            """
 
-    @property
-    def amenities(self):
-        # Please crosscheck this getter
-        """
-        Getter attribute amenities
-        that returns the list of Amenity instances
-        """
+            return self.amenity_ids
 
-        return self.amenity_ids
+        @amenities.setter
+        def amenities(self, obj):
+            # Please crosscheck this setter
+            """
+            Setter attribute amenities
+            that returns the list of Amenity instances
+            """
 
-    @amenities.setter
-    def amenities(self, obj):
-        # Please crosscheck this setter
-        """
-        Setter attribute amenities
-        that returns the list of Amenity instances
-        """
+            if type(obj) is Amenity:
+                self.amenity_ids.append(obj)
 
-        if type(obj) is Amenity:
-            self.amenity_ids.append(obj)
+        @property
+        def reviews(self):
+            """
+            Returns the list of Review instances with
+            place_id equals to the current Place.id
+            """
 
-    @property
-    def reviews(self):
-        """
-        Returns the list of Review instances with
-        place_id equals to the current Place.id
-        """
+            from models import storage
 
-        from models import storage
-
-        my_reviews = []
-        all_reviews = storage.all('Reviews')
-        for review in all_reviews.values():
-            if review.place_id == self.id:
-                my_reviews.append(review)
-        return my_reviews
+            my_reviews = []
+            all_reviews = storage.all('Reviews')
+            for review in all_reviews.values():
+                if review.place_id == self.id:
+                    my_reviews.append(review)
+            return my_reviews

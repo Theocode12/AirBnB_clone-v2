@@ -67,7 +67,7 @@ class BaseModel:
         dictionary = {}
         dictionary.update(self.__dict__)
 
-        if models.storage_type is None:
+        if storage_type is None:
             dictionary['created_at'] = self.created_at.isoformat()
             dictionary['updated_at'] = self.updated_at.isoformat()
 
