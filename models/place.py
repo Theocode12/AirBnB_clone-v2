@@ -12,16 +12,16 @@ from sqlalchemy import (
     Table,
     ForeignKey
 )
-if models.storage_type == "db":
-    metadata = Base.metadata
+from os import getenv
 
-if models.storage_type == "db":
+storage_type = getenv("HBNB_TYPE_STORAGE")
+if storage_type == "db":
     metadata = Base.metadata
 
 
 class Place(BaseModel, Base):
     """ A place to stay """
-    if models.storage_type == "db":
+    if storage_type == "db":
         __tablename__ = "places"
         city_id = Column(String(128), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(128), ForeignKey('users.id'), nullable=False)
@@ -52,7 +52,7 @@ class Place(BaseModel, Base):
         longitude = 0.0
         amenity_ids = []
 
-    if models.storage_type == "db":
+    if storage_type == "db":
         place_amenity = Table(
             "place_amenity",
             metadata,

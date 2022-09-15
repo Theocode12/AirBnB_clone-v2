@@ -7,11 +7,13 @@ from sqlalchemy import (
     String,
     ForeignKey
 )
+from os import getenv
 
+storage_type = getenv("HBNB_TYPE_STORAGE")
 
 class Review(BaseModel, Base):
     """ Review class to store review information """
-    if models.storage_type == "db":
+    if storage_type == "db":
         __tablename__ = "reviews"
         text = Column(String(1024), nullable=False)
         place_id = Column(

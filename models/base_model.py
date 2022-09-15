@@ -9,9 +9,11 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
+from os import getenv
 import models
 
-if models.storage_type == 'db':
+storage_type = getenv("HBNB_TYPE_STORAGE")
+if storage_type == 'db':
     Base = declarative_base()
 else:
     Base = object
@@ -20,7 +22,7 @@ Relationship = relationship
 
 class BaseModel:
     """A base class for all hbnb models"""
-    if models.storage_type == 'db':
+    if storage_type == 'db':
         id = Column(String(60), primary_key=True)
         created_at = Column(DateTime, nullable=False,
                             default=datetime.utcnow())
