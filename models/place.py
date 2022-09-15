@@ -82,7 +82,7 @@ class Place(BaseModel, Base):
         """
 
         if type(obj) is Amenity:
-                self.amenity_ids.append(obj)
+            self.amenity_ids.append(obj)
 
     @property
     def reviews(self):
