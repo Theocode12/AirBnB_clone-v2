@@ -12,7 +12,8 @@ from sqlalchemy import (
     Table,
     ForeignKey
 )
-metadata = Base.metadata
+if models.storage_type == "db":
+    metadata = Base.metadata
 
 if models.storage_type == "db":
     metadata = Base.metadata
