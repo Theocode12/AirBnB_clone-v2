@@ -95,3 +95,4 @@ class DBStorage:
 
         if obj:
             self.__session.delete(obj)
+    
