@@ -9,9 +9,13 @@ from sqlalchemy import (
     Integer,
     String,
     FLOAT,
+    Table,
     ForeignKey
 )
 metadata = Base.metadata
+
+if models.storage_type == "db":
+    metadata = Base.metadata
 
 
 class Place(BaseModel, Base):
@@ -28,7 +32,6 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(FLOAT(precision=10), nullable=True)
         longitude = Column(FLOAT(precision=10), nullable=True)
-        # amenity_ids = "I no sabi weytin i go use dis one do"
         amenities = Relationship(
             "Amenity", secondary="place_amenity",
             viewonly=False
@@ -47,10 +50,39 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
-        
-    def __init__(self, *args, **kwargs):
-        """initializes"""
-        super().__init__(*args, **kwargs)
+
+    if models.storage_type == "db":
+        place_amenity = Table(
+            "place_amenity",
+            metadata,
+            Column(
+                "place_id", String(60), ForeignKey("places.id"),
+                primary_key=True, nullable=False),
+            Column(
+                "amenity_id", String(60), ForeignKey("amenities.id"),
+                primary_key=True, nullable=False),
+        )
+
+    @property
+    def amenities(self):
+        # Please crosscheck this getter
+        """
+        Getter attribute amenities
+        that returns the list of Amenity instances
+        """
+
+        return self.amenity_ids
+
+    @amenities.setter
+    def amenities(self, obj):
+        # Please crosscheck this setter
+        """
+        Setter attribute amenities
+        that returns the list of Amenity instances
+        """
+
+        if type(obj) is Amenity:
+                self.amenity_ids.append(obj)
 
     @property
     def reviews(self):
@@ -68,35 +100,3 @@ class Place(BaseModel, Base):
                 my_reviews.append(review)
         return my_reviews
 
-    if models.storage_type == "db":
-        place_amenity = Table(
-            "place_amenity",
-            metadata,
-            Column(
-                "place_id", String(60), ForeignKey("places.id"),
-                primary_key=True, nullable=False),
-            Column(
-                "amenity_id", String(60), ForeignKey("amenities.id"),
-                primary_key=True, nullable=False),
-        )
-    else:
-        @property
-        def amenities(self):
-            # Please crosscheck this getter
-            """
-            Getter attribute amenities
-            that returns the list of Amenity instances
-            """
-
-            return self.amenity_ids
-
-        @amenities.setter
-        def amenities(self, obj):
-            # Please crosscheck this setter
-            """
-            Setter attribute amenities
-            that returns the list of Amenity instances
-            """
-
-            if type(obj) is Amenity:
-                self.amenity_ids.append(obj)

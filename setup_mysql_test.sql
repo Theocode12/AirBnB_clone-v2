@@ -11,4 +11,5 @@ GRANT USAGE ON *.* TO 'hbnb_test'@'localhost';
 GRANT SELECT ON `performance_schema`.* TO 'hbnb_test'@'localhost';
 -- Grant all previledges on hbnb_test_db to hbnb_test
 GRANT ALL PRIVILEGES ON `hbnb_test_db`.* TO 'hbnb_test'@'localhost';
+-- Flush all previledges
 FLUSH PRIVILEGES;

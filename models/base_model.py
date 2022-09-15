@@ -2,7 +2,6 @@
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
 from datetime import datetime
-from venv import create
 from sqlalchemy import (
     Column,
     String,
@@ -65,9 +64,11 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         dictionary.update(self.__dict__)
+
         if models.storage_type is None:
             dictionary['created_at'] = self.created_at.isoformat()
             dictionary['updated_at'] = self.updated_at.isoformat()
+
         return dictionary
 
     def delete(self):
