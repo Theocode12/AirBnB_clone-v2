@@ -44,7 +44,7 @@ class DBStorage:
         """
         classes = {'User': User, 'Place': Place,
                    'State': State, 'City': City,
-                   'Review': Review}
+                   'Amenity': Amenity, 'Review': Review}
         obj_dict = {}
         if cls:
             cls_objs = self.__session.query(classes[cls]).all()
