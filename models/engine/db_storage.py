@@ -56,8 +56,6 @@ class DBStorage:
                     cls_objs.extend(cls_obj)
 
         for obj in cls_objs:
-            if "_sa_instance_state" in obj.__dict__.keys():
-                del obj.__dict__['_sa_instance_state']
             key = obj.__class__.__name__ + '.' + obj.id
             obj_dict[key] = obj
         return obj_dict
