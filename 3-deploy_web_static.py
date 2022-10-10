@@ -1,13 +1,38 @@
 #!/usr/bin/python3
 """
-A scrript to deplot web_Static files on remote server
+Full deployment
 """
 from fabric.api import *
+import datetime.datetime
 import os
 
 
-env.user = 'ubuntu'
-env.hosts = ['3.230.166.53', '3.238.228.250']
+def deploy():
+    """
+    Full deployment
+    """
+
+    archive = do_pack()
+    if not archive:
+        return False
+    result = do_deploy(archive)
+    return result
+
+
+def do_pack():
+    """
+    packing webstatic files
+    """
+
+    try:
+        dateT = datetime.now().strftime("%Y%m%d%H%M%S")
+        local("mkdir -p versions")
+        file_dir = "versions/web_static_{}.tgz".format(dateT)
+        local("tar -cvzf {} web_static".format(file_dir))
+        return file_dir
+
+    except Exception:
+        return None
 
 
 def do_deploy(archive_path):
@@ -20,6 +45,7 @@ def do_deploy(archive_path):
 
     try:
         archive = archive_path.split("/")[-1]
+
         tmp_path = '/tmp/' + archive
         release_path = '/data/web_static/releases/{}/'.format(
             archive.partition('.')[0])
