@@ -19,21 +19,23 @@ def do_deploy(archive_path):
         return False
 
     try:
-        archive_name = archive_path.split("/")[0]
-        tmp_path = "/tmp/" + archive_name
-        release_path = "/data/web_static/releases/{}".format(
-                       archive_name.split('.')[0])
+	archive = archive_path.split("/")[-1]
 
-        put(remote_path=tmp_path, local_path=archive_path)
-        run("mkdir -p {}".format(release_path))
-        run("tar -xvzf {} -C {}".format(tmp_path, release_path))
-        run("mv {}/web_static/* {}".format(release_path, release_path))
-        run("rm -r {}/web_static".format(release_path))
-        run("rm -r {}".format(tmp_path))
-        run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(release_path))
+        tmp_path = '/tmp/' + archive
+        release_path = '/data/web_static/releases/{}/'.format(
+            archive.partition('.')[0])
 
-        print("New version deployed!")
+        put(archive_path, tmp_path)
+        run('mkdir -p {}'.format(release_path))
+        run('tar -xzf {} -C {}'.format(tmp_path, release_path))
+        run('rm {}'.format(tmp_path))
+        run('mv {}web_static/* {}'.format(release_path, release_path))
+        run('rm -rf {}web_static/'.format(release_path))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {} /data/web_static/current'.format(release_path))
+
+        # Task carried out successfully
+        print('New version deployed!')
         return True
     except Exception:
         return False
