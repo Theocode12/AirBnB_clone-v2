@@ -3,7 +3,7 @@
 Full deployment
 """
 from fabric.api import *
-import datetime.datetime
+from datetime import datetime
 import os
 
 
