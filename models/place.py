@@ -16,6 +16,17 @@ storage_type = getenv("HBNB_TYPE_STORAGE")
 if storage_type == "db":
     metadata = Base.metadata
 
+place_amenity = Table(
+            "place_amenity",
+            metadata,
+            Column(
+                "place_id", String(60), ForeignKey("places.id"),
+                primary_key=True, nullable=False),
+            Column(
+                "amenity_id", String(60), ForeignKey("amenities.id"),
+                primary_key=True, nullable=False),
+        )
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -39,16 +50,12 @@ class Place(BaseModel, Base):
             "Review", cascade="all, delete", backref="place_amenity")
 
     if storage_type == "db":
-        place_amenity = Table(
-            "place_amenity",
-            metadata,
-            Column(
-                "place_id", String(60), ForeignKey("places.id"),
-                primary_key=True, nullable=False),
-            Column(
-                "amenity_id", String(60), ForeignKey("amenities.id"),
-                primary_key=True, nullable=False),
+        amenities = Relationship(
+            "Amenity", secondary="place_amenity",
+            viewonly=False
         )
+        reviews = Relationship(
+            "Review", cascade="all, delete", backref="place_amenity")
     else:
         @property
         def amenities(self):
