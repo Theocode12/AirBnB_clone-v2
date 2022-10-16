@@ -7,12 +7,8 @@ from sqlalchemy import (
 )
 from os import getenv
 
-storage_type = getenv("HBNB_TYPE_STORAGE")
 
 class Amenity(BaseModel, Base):
     """ Amenity class to store amenity information """
-    if storage_type == "db":
-        __tablename__ = "amenities"
-        name = Column(String(128), nullable=False)
-    else:
-        name = ""
+    __tablename__ = "amenities"
+    name = Column(String(128), nullable=False)

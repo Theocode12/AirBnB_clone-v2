@@ -9,17 +9,10 @@ storage_type = getenv("HBNB_TYPE_STORAGE")
 
 class State(BaseModel, Base):
     """ State class """
-    if storage_type == 'db':
-        __tablename__ = "states"
+    __tablename__ = "states"
 
-        name = Column(String(128), nullable=False)
-        cities = Relationship('City', backref='state', cascade='all, delete')
-    else:
-        name = ""
-
-    def __init__(self, *args, **kwargs):
-        """initializes Place"""
-        super().__init__(*args, **kwargs)
+    name = Column(String(128), nullable=False)
+    cities = Relationship('City', backref='state', cascade='all, delete')
 
     @property
     def cities(self):

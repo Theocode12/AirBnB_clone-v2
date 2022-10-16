@@ -7,10 +7,7 @@ from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy import Column, String, DateTime
 
 Relationship = relationship
-if getenv("HBNB_TYPE_STORAGE"):
-    Base = declarative_base()
-else:
-    Base = object
+Base = declarative_base()
 
 
 class BaseModel:
