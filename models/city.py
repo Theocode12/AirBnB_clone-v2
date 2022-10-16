@@ -4,7 +4,6 @@ from models.base_model import BaseModel, Relationship, Base
 from sqlalchemy import Column, String, ForeignKey
 from os import getenv
 
-storage_type = getenv("HBNB_TYPE_STORAGE")
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
