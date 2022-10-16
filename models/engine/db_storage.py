@@ -47,7 +47,7 @@ class DBStorage:
                    'Amenity': Amenity, 'Review': Review}
         obj_dict = {}
         if cls:
-            cls_objs = self.__session.query(classes[cls]).all()
+            cls_objs = self.__session.query(cls).all()
         else:
             cls_objs = []
             for cls_name in list(classes.values()):
