@@ -66,3 +66,10 @@ class FileStorage:
         if obj:
             del (self.__objects["{}.{}".format(type(obj).__name__, obj.id)])
             del (obj)
+
+    def close(self):
+        """
+        reloads all object in file.json
+        """
+
+        self.reload()
