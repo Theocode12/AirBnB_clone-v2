@@ -13,8 +13,7 @@ from sqlalchemy import (
 from os import getenv
 
 storage_type = getenv("HBNB_TYPE_STORAGE")
-if storage_type == "db":
-    metadata = Base.metadata
+metadata = Base.metadata
 
 place_amenity = Table(
             "place_amenity",
