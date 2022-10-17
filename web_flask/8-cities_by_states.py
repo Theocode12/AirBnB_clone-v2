@@ -17,10 +17,19 @@ def teardown_session(exception):
     storage.close()
 
 
+@app.route("/states_list", strict_slashes=False)
+def states_page():
+    """
+    render list of states
+    """
+    states = storage.all(State).values()
+    return render_template("7-states_list.html", states=states)
+
+
 @app.route("/cities_by_states", strict_slashes=False)
 def state_cites_page():
     """
-    render list of states
+    render list of cities
     """
     states = storage.all(State).values()
     return render_template("8-cities_by_states.html", states=states)
